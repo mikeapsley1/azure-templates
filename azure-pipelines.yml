@@ -10,9 +10,9 @@ variables:
   
 stages:
 
-  - stage: Build
+  - stage: Build & Scan
     jobs:
-    - job: Build_Docker_Image
+    - job: 
       steps:
       - task: Docker@2
         inputs:
@@ -20,11 +20,7 @@ stages:
           command: 'build'
           Dockerfile: '**/Dockerfile'
           tags: '$(tag)'  
-
-  - stage: Scan
-    jobs:
-    - job: Dockle_Scan
-      steps:
       - template: dockle-container.yml
         parameters:
           image: $(imageName):$(tag)  
+
