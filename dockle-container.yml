@@ -1,3 +1,6 @@
+parameters:
+  - name: image
+
 steps:
 - script: |
     VERSION=$(
@@ -13,4 +16,4 @@ steps:
   displayName: "Run Dockle scan"
   inputs:
     script: |
-      ./dockle $(imageName):$(tag) 
+      ./dockle ${{ parameters.image }}
