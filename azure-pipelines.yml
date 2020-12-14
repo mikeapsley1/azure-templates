@@ -10,7 +10,7 @@ variables:
   
 stages:
 
-  - stage: Build & Scan
+  - stage: Build_and_Scan
     jobs:
     - job: 
       steps:
