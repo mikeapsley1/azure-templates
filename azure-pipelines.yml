@@ -6,7 +6,7 @@ pool:
 
 stages:
 
-  - stage: scan
+  - stage: build
     jobs:
     - job: Build_Docker_Image
       pool:
