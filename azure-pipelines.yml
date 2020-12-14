@@ -6,6 +6,7 @@ pool:
 
 variables:
   tag: 'azuredevops-$(Build.BuildNumber)'
+  imageName: 'mikebroomfield/azure-snake-dockle'
   
 stages:
 
@@ -24,5 +25,5 @@ stages:
           tags: '$(tag)'
       - template: dockle-container.yml
         parameters:
-          image: $(tag)      -     
+          image: $(imageName):$(tag)       -     
 
