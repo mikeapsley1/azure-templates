@@ -20,10 +20,9 @@ stages:
           command: 'build'
           Dockerfile: '**/Dockerfile'
           tags: '$(tag)'
-      - bash: echo $(tag)
-      # - template: dockle-container.yml
-      #   parameters:
-      #     image: $(tag)      -     
+      - template: dockle-container.yml
+        parameters:
+          image: $(tag)      -     
 
 
 
