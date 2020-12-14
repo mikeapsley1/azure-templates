@@ -24,6 +24,6 @@ stages:
       pool:
         vmImage: 'ubuntu-latest'
       steps:
-      - template: templates/dockle-container.yml
+      - template: dockle-container.yml
         parameters:
           image: $(Build.BuildId)
