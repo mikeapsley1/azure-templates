@@ -16,9 +16,10 @@ stages:
         inputs:
           command: 'build'
           Dockerfile: '**/Dockerfile'
-      - template: dockle-container.yml
-        parameters:
-          image: $(Build.BuildId)      -     
+      - bash: echo $(Build.BuildId)
+      # - template: dockle-container.yml
+      #   parameters:
+      #     image: $(Build.BuildId)      -     
 
 
 
