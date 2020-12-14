@@ -17,12 +17,12 @@ stages:
       steps:
       - task: Docker@2
         inputs:
-          command: 'build'
+          containerRegistry: 'dockerhub'
+          repository: 'mikebroomfield/azure-snake-dockle'
+          command: 'buildAndPush'
           Dockerfile: '**/Dockerfile'
           tags: '$(tag)'
       - template: dockle-container.yml
         parameters:
           image: $(tag)      -     
-
-
 
