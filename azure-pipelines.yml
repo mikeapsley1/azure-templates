@@ -4,6 +4,9 @@ trigger: none
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  tag: 'azuredevops-$(Build.BuildNumber)'
+  
 stages:
 
   - stage: build
@@ -16,6 +19,7 @@ stages:
         inputs:
           command: 'build'
           Dockerfile: '**/Dockerfile'
+          tags: '$(tag)'
       - bash: echo $(Build.BuildId)
       # - template: dockle-container.yml
       #   parameters:
