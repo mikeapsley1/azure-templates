@@ -16,14 +16,9 @@ stages:
         inputs:
           command: 'build'
           Dockerfile: '**/Dockerfile'
-
-
-  - stage: scan
-    jobs:
-    - job: Security_Scans
-      pool:
-        vmImage: 'ubuntu-latest'
-      steps:
       - template: dockle-container.yml
         parameters:
-          image: $(Build.BuildId)
+          image: $(Build.BuildId)      -     
+
+
+
