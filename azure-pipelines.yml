@@ -10,7 +10,7 @@ variables:
   
 stages:
 
-  - stage: build
+  - stage: Build
     jobs:
     - job: Build_Docker_Image
       steps:
@@ -19,8 +19,12 @@ stages:
           repository: 'mikebroomfield/azure-snake-dockle'
           command: 'build'
           Dockerfile: '**/Dockerfile'
-          tags: '$(tag)'
+          tags: '$(tag)'  
+
+  - stage: Scan
+    jobs:
+    - job: Dockle_Scan
+      steps:
       - template: dockle-container.yml
         parameters:
-          image: $(imageName):$(tag)       -     
-
+          image: $(imageName):$(tag)  
