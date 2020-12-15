@@ -26,4 +26,4 @@ stages:
       - template: dockle-container.yml
         parameters:
           image: $(imageName):$(tag)  
-
+      
