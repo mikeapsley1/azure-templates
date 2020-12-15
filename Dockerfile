@@ -1,4 +1,4 @@
-FROM mhart/alpine-node
+FROM alpine:latest
   
 COPY . /app
 
