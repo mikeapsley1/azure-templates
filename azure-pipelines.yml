@@ -1,6 +1,9 @@
 
 trigger: none
 
+pr:
+- dockle
+
 pool:
   vmImage: 'ubuntu-latest'
 
