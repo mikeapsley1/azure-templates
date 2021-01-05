@@ -25,5 +25,6 @@ stages:
           tags: '$(tag)'  
       - template: dockle-container.yml
         parameters:
-          image: $(imageName):$(tag)  
+          image: $(imageName):$(tag)
+          ignoreCheckpoints: 'DKL-DI-0003 CIS-DI-0001'
       
