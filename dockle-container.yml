@@ -23,11 +23,7 @@ steps:
       grep '"tag_name":' | \
       sed -E 's/.*"v([^"]+)".*/\1/'
       )
-      if [[ "${{ parameters.ignoreCheckpoints }}" == "" ]]; then
-        CHECKPOINTS_TO_IGNORE=""
-      else
-        CHECKPOINTS_TO_IGNORE=$(echo " ${{ parameters.ignoreCheckpoints }}" | tr -s " " " " | sed "s/[[:space:]]/ -i /g")
-      fi
+      CHECKPOINTS_TO_IGNORE=$(echo " ${{ parameters.ignoreCheckpoints }}" | tr -s " " " " | sed "s/[[:space:]]/ -i /g")
       wget https://github.com/goodwithtech/dockle/releases/download/v${VERSION}/dockle_${VERSION}_Linux-64bit.tar.gz
       tar zxvf dockle_${VERSION}_Linux-64bit.tar.gz
   displayName: 'Download and install Dockle'
@@ -37,9 +33,9 @@ steps:
   inputs:
     script: |
       # Print report
-      echo ./dockle --exit-code 0 ${{CHECKPOINTS_TO_IGNORE}} ${{ parameters.image }}
+      echo ./dockle --exit-code 0 ${CHECKPOINTS_TO_IGNORE} ${{ parameters.image }}
       # Fail on critical checkpoints
-      echo ./dockle --exit-code 1 ${{CHECKPOINTS_TO_IGNORE}} --exit-level ${{ parameters.failLevel }} ${{ parameters.image }} >> /dev/null
+      echo ./dockle --exit-code 1 ${CHECKPOINTS_TO_IGNORE} --exit-level ${{ parameters.failLevel }} ${{ parameters.image }} >> /dev/null
 
     
     
