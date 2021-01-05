@@ -15,7 +15,7 @@ parameters:
     default: '' # space separated list of  checkpoints to ignore. see full ist of checkpoints https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md
 
 steps:
-  - script: |
+- script: |
       apt-get update
       apt-get install -y rpm curl wget
       VERSION=$(
