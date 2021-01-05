@@ -4,28 +4,22 @@
 #  parameters:
 #    image: 'my-image-name'
 #    failLevel: 'fatal'
-#    ignoreCheckpoints: 'DKL-DI-0003 CIS-DI-0001'
-#
+
 
 parameters:
   - name: image
   - name: failLevel
     default: 'fatal' # allowed values are 'info', 'warn', 'fatal'
-  - name: ignoreCheckpoints
-    default: '' # space separated list of  checkpoints to ignore. see full ist of checkpoints https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md
 
 steps:
 - script: |
-      apt-get update
-      apt-get install -y rpm curl wget
-      VERSION=$(
-      curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | \
-      grep '"tag_name":' | \
-      sed -E 's/.*"v([^"]+)".*/\1/'
-      )
-      CHECKPOINTS_TO_IGNORE=$(echo " ${{ parameters.ignoreCheckpoints }}" | tr -s " " " " | sed "s/[[:space:]]/ -i /g")
-      wget https://github.com/goodwithtech/dockle/releases/download/v${VERSION}/dockle_${VERSION}_Linux-64bit.tar.gz
-      tar zxvf dockle_${VERSION}_Linux-64bit.tar.gz
+    VERSION=$(
+    curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | \
+    grep '"tag_name":' | \
+    sed -E 's/.*"v([^"]+)".*/\1/' \
+    ) && curl -L -o dockle.tar.gz https://github.com/goodwithtech/dockle/releases/download/v${VERSION}/dockle_${VERSION}_Linux-64bit.tar.gz &&  \
+    tar zxvf dockle.tar.gz
+    ./dockle -v
   displayName: 'Download and install Dockle'
 
 - task: CmdLine@2
@@ -33,9 +27,8 @@ steps:
   inputs:
     script: |
       # Print report
-      echo ./dockle --exit-code 0 ${CHECKPOINTS_TO_IGNORE} ${{ parameters.image }}
+      ./dockle --exit-code 0 ${{ parameters.image }}
       # Fail on critical checkpoints
-      echo ./dockle --exit-code 1 ${CHECKPOINTS_TO_IGNORE} --exit-level ${{ parameters.failLevel }} ${{ parameters.image }} >> /dev/null
-
-    
-    
+      ./dockle --exit-code 1 --exit-level ${{ parameters.failLevel }} ${{ parameters.image }} >> /dev/null
+      
+      
