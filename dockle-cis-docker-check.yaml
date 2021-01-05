@@ -1,0 +1,52 @@
+# Container Image Linter for Security, Helping build the Best-Practice Docker Image
+# https://github.com/goodwithtech/dockle
+# usage:
+#
+#- template: devops/tasks/dockle-cis-docker-check.yaml@terraform-commons
+#  parameters:
+#    image: 'my-image-name'
+#    reportFormat: 'json'
+#    reportPath: 'dockle_scan_results.json'
+#    workingDirectory: 'myWorkingDir'
+#
+
+parameters:
+  - name: image
+  - name: reportFormat
+    default: 'json' # allowed values are  'json'
+  - name: reportPath # relative to workingDirectory
+    default: 'dockle_scan_results.json'
+  - name: failLevel
+    default: 'fatal' # allowed values are 'info', 'warn', 'fatal'
+  - name: ignoreCheckpoints
+    default: '' # space separated list of  checkpoints to ignore. see full ist of checkpoints https://github.com/goodwithtech/dockle/blob/master/CHECKPOINT.md
+  - name: workingDirectory
+    default: ''
+
+
+steps:
+  - script: |
+      apt-get update
+      apt-get install -y rpm curl wget
+      VERSION=$(
+      curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | \
+      grep '"tag_name":' | \
+      sed -E 's/.*"v([^"]+)".*/\1/'
+      )
+      if [[ "${{ parameters.ignoreCheckpoints }}" == "" ]]; then
+        CHECKPOINTS_TO_IGNORE=""
+      else
+        CHECKPOINTS_TO_IGNORE=$(echo " ${{ parameters.ignoreCheckpoints }}" | tr -s " " " " | sed "s/[[:space:]]/ -i /g")
+      fi
+      wget https://github.com/goodwithtech/dockle/releases/download/v${VERSION}/dockle_${VERSION}_Linux-64bit.tar.gz
+      tar zxvf dockle_${VERSION}_Linux-64bit.tar.gz
+      # Build report
+      ./dockle -f ${{ parameters.reportFormat }} -o ${{ parameters.reportPath }} ${{ parameters.image }}
+      # Print report
+      ./dockle --exit-code 0 ${CHECKPOINTS_TO_IGNORE} ${{ parameters.image }}
+      # Fail on critical checkpoints
+      ./dockle --exit-code 1 ${CHECKPOINTS_TO_IGNORE} --exit-level ${{ parameters.failLevel }} ${{ parameters.image }} >> /dev/null
+    displayName: 'Dockle Check Container'
+    workingDirectory: ${{ parameters.workingDirectory }}
+  - publish: ./${{ parameters.workingDirectory }}/${{ parameters.reportPath }}
+    artifact: dockleScanResults
