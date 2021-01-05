@@ -4,7 +4,7 @@
 #  parameters:
 #    image: 'my-image-name'
 #    failLevel: 'fatal'
-#    ignoreCheckpoints: 'dockle_scan_results.json'
+#    ignoreCheckpoints: 'DKL-DI-0003 CIS-DI-0001'
 #
 
 parameters:
