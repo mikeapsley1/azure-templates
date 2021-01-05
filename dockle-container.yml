@@ -37,9 +37,9 @@ steps:
   inputs:
     script: |
       # Print report
-      echo ./dockle --exit-code 0 ${CHECKPOINTS_TO_IGNORE} ${{ parameters.image }}
+      echo ./dockle --exit-code 0 ${{CHECKPOINTS_TO_IGNORE}} ${{ parameters.image }}
       # Fail on critical checkpoints
-      echo ./dockle --exit-code 1 ${CHECKPOINTS_TO_IGNORE} --exit-level ${{ parameters.failLevel }} ${{ parameters.image }} >> /dev/null
+      echo ./dockle --exit-code 1 ${{CHECKPOINTS_TO_IGNORE}} --exit-level ${{ parameters.failLevel }} ${{ parameters.image }} >> /dev/null
 
     
     
