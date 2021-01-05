@@ -23,7 +23,7 @@ stages:
           command: 'build'
           Dockerfile: '**/Dockerfile'
           tags: '$(tag)'  
-      - template: dockle-cis-docker-check.yaml
+      - template: docker-compose.yml
         parameters:
           image: $(imageName):$(tag)
           ignoreCheckpoints: 'DKL-DI-0003 CIS-DI-0001'
